@@ -1,0 +1,30 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Application Manager</title>
+
+</head>
+<body>
+    <h1>Application Manager</h1>
+    {% for application in applications %}
+        <div>
+            <p>Applicant: {{ application[0] }}</p>
+            <form action="{{ url_for('accept_application') }}" method="post">
+                <input type="hidden" name="username" value="{{ application[0] }}">
+                <label for="temp_password">Temporary Password:</label>
+                <input type="password" name="temp_password" required>
+                <input type="submit" value="Accept">
+            </form>
+            <form action="{{ url_for('reject_application') }}" method="post">
+                <input type="hidden" name="username" value="{{ application[0] }}">
+                <label for="rejection_reason">Reason for Rejection:</label>
+                <input type="text" name="rejection_reason" required>
+                <input type="submit" value="Reject">
+            </form>
+        </div>
+    {% endfor %}
+    <a href="{{ url_for('administrative_page') }}">Back to Admin Page</a>
+</body>
+</html>
