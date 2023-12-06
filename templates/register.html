@@ -2,44 +2,28 @@
 <html>
 <head>
     <title>Register</title>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./test.css" type="text/css">
-    <style>
-        .center {
-    margin: auto;
-    text-align: center;
-    width: 50%;
-    padding: 10px;
-    }
-    </style>
-    </head>
-
-    <body>
-        <div class= grid-container> 
-        <div class="center">
-            <h2><b>Register</b></h2>
-         
-          <a href="{{ url_for('homepage') }}">Home</a>
-          <a href="{{ url_for('tweetsPage') }}">Tweets</a>
-          <a href="{{ url_for('registerPage') }}">Register</a>
-          <a href="{{ url_for('loginPage') }}">Login</a>
-          <a href="{{ url_for('profilePage') }}">Profile</a>
     
- 
-          <form method = "POST">
-            <label for="username">Username:</label>
-            <input name = "username"><br><br>
-            <label for="password">Password:</label>
-            <input name = "password"><br><br>
-            <input type = "submit"><br><br>
-            
-          </form>
-     
-        </div>
-    </div>
-  
-   
-    </body>
+</head>
+<body>
+    <h2>Register</h2>
+    <form method="POST">
+      <label for="username">Username:</label>
+      <input name="username" required><br><br>
+      <label for="user_type">User Type:</label>
+      <select name="user_type">
+          <option value="OrdinaryUser">Ordinary User</option>
+          <option value="CorporateUser">Corporate User</option>
+        
+      </select><br><br>
+      <input type="submit" value="Register">
+  </form>
+
+    <h2>Check Application Status</h2>
+    <form method="POST" action="{{ url_for('check_status') }}">
+        <label for="check_username">Username:</label>
+        <input name="check_username" required><br><br>
+        <input type="submit" value="Check Status">
+    </form>
+    <a href="{{ url_for('homepage') }}">Back to Home</a>
+</body>
 </html>

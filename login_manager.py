@@ -5,7 +5,7 @@ class LoginManager:
         self.current_user = {'username': None, 'user_type': 'Surfer'}
 
     def login(self, username, password):
-        # Logic to check username and password
+        #check username and password
         with open('profiles.csv', 'r', newline='') as file:
             reader = csv.reader(file)
             for row in reader:

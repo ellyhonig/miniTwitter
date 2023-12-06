@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Application Status</title>
+</head>
+<body>
+    <h2>Application Status</h2>
+    {% if status == 'Rejected' %}
+        <p>Status: Rejected</p>
+        <p>Rejection Reason: {{ rejection_reason }}</p>
+    {% elif status == 'Accepted' %}
+        <p>Status: Accepted</p>
+        <p>Temporary Password: {{ temp_password }}</p>
+    {% else %}
+        <p>Status: {{ status or 'Still under review' }}</p>
+    {% endif %}
+    <a href="{{ url_for('registerPage') }}">Back to Registration</a>
+    <a href="{{ url_for('homepage') }}">Back to Home</a>
+</body>
+</html>

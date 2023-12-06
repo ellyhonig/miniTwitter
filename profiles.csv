@@ -1,2 +1,3 @@
 username,password,user_type,subscribers
 superuser,superuser_pass,SuperUser,0
+elly,pass,ordinary,0

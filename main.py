@@ -3,6 +3,7 @@ from flask import Flask, request, render_template, redirect, url_for, flash
 from login_manager import LoginManager
 from profile_manager import ProfileManager
 from super_user import SuperUser
+from application_manager import ApplicationManager
 import os
 import csv
 
@@ -14,9 +15,11 @@ db_tweets = []
 info = [""]
 '''message, author, likes, dislikes'''
 
-login_manager = LoginManager()
-profile_manager = ProfileManager(login_manager)
-super_user = SuperUser(profile_manager)
+login_manager = LoginManager() #contains currently logged in user's info
+profile_manager = ProfileManager(login_manager) #edits profiles.csv
+application_manager = ApplicationManager()
+super_user = SuperUser(profile_manager, application_manager)
+
 
 @app.route('/')
 def homepage():
@@ -53,17 +56,23 @@ def login():
     else:
         return render_template('login.html')
 
-@app.route('/register')
+
+
+@app.route('/register', methods=['GET', 'POST'])
 def registerPage():
+    if request.method == 'POST':
+        desired_username = request.form['username']
+        user_type = request.form['user_type']
+        surfer = Surfer()
+        surfer.submit_application(desired_username, user_type)
+        return redirect(url_for('registerPage'))
     return render_template('register.html')
-
-@app.route('/register', methods=['POST'])
-def apply_post():
-    desired_username = request.form['username']
+@app.route('/check-status', methods=['POST'])
+def check_status():
+    username = request.form['check_username']
     surfer = Surfer()
-    surfer.submit_application(desired_username)
-    return homepage()
-
+    status, rejection_reason, temp_password = surfer.check_application_status(username)
+    return render_template('status.html', status=status, rejection_reason=rejection_reason, temp_password=temp_password)
 
     
 
@@ -82,14 +91,23 @@ def profilePageChanges_post():
     return render_template('myprofile.html', info = info)
 
 @app.route('/application-manager')
-def application_manager():
-    applications = []
-    with open('registration.csv', 'r', newline='') as file:
-        reader = csv.reader(file)
-        for row in reader:
-            applications.append(row)
-    return render_template('application_manager.html', applications=applications)
-    
+def application_manager_page():
+    applications = application_manager.get_applications()
+    return render_template('application_manager_page.html', applications=applications)
+@app.route('/accept-application', methods=['POST'])
+def accept_application():
+    username = request.form['username']
+    temp_password = request.form['temp_password']
+    super_user.manage_application(username, accept=True, temp_password=temp_password)
+    return redirect(url_for('application_manager_page'))
+
+@app.route('/reject-application', methods=['POST'])
+def reject_application():
+    username = request.form['username']
+    rejection_reason = request.form['rejection_reason']
+    super_user.manage_application(username, accept=False, rejection_reason=rejection_reason)
+    return redirect(url_for('application_manager_page'))
+
 @app.route('/tweets')
 def tweetsPage():
     return render_template('tweets.html', db_tweets = db_tweets)
@@ -102,4 +120,21 @@ def tweetsPage_post():
 
 @app.route('/administrative')
 def administrative_page():
-    return render_template('administrative.html')  
+    return render_template('administrative.html')
+
+@app.route('/user-management')
+def user_management():
+    users = profile_manager.get_all_profiles()
+    return render_template('user_management.html', users=users)
+
+@app.route('/delete-user/<username>', methods=['POST'])
+def delete_user(username):
+    super_user.delete_user(username)
+    return redirect(url_for('user_management'))    
+@app.route('/add-profile', methods=['POST'])
+def add_profile():
+    username = request.form['username']
+    password = request.form['password']
+    user_type = request.form['user_type']
+    super_user.add_profile(username, password, user_type, '0') 
+    return redirect(url_for('user_management'))    

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Management</title>
+</head>
+<body>
+    <h1>User Management</h1>
+
+    <form action="{{ url_for('add_profile') }}" method="post">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="text" name="user_type" placeholder="User Type (e.g., OrdinaryUser, CorporateUser)" required>
+        <button type="submit">Add Profile</button>
+    </form>
+    <div id="existing-users">
+        {% for user in users %}
+        <div class="user-profile">
+            <p>Username: {{ user[0] }}</p>
+            <!-- Display other user details -->
+            <form action="{{ url_for('delete_user', username=user[0]) }}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+    <a href="{{ url_for('administrative_page') }}">Back to Admin Page</a>
+</body>
+</html>
