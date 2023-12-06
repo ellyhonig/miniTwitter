@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Disputes</title>
+</head>
+<body>
+    <h1>Disputes</h1>
+
+    <div id="disputes">
+        {% for warning in disputed_warnings %}
+        <div class="dispute">
+            <p>Accused User: {{ warning[0] }}</p>
+            <p>Accuser User: {{ warning[1] }}</p>
+            <form action="{{ url_for('remove_warning', accused_user=warning[0], accuser_user=warning[1]) }}" method="post">
+                <button type="submit">Remove Warning</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+    <a href="{{ url_for('administrative_page') }}">Back to Admin Page</a>
+</body>
+</html>

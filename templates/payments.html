@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payments and Password</title>
+</head>
+<body>
+    <h1>Payments and Password</h1>
+
+  
+    <form action="{{ url_for('change_password') }}" method="post">
+        <input type="password" name="new_password" placeholder="New Password" required>
+        <button type="submit">Change Password</button>
+    </form>
+    <form action="{{ url_for('deposit') }}" method="post">
+        <button type="submit">Deposit $10</button>
+    </form>
+   
+    <form action="{{ url_for('pay_fine') }}" method="post">
+        <button type="submit">Pay Fine</button>
+    </form>
+    <form action="{{ url_for('delete_profile') }}" method="post">
+        <button type="submit">Delete Profile</button>
+    </form>
+
+
+    <a href="{{ url_for('homepage') }}">Back to Home</a>
+</body>
+</html>
