@@ -1,3 +1,4 @@
-username,password,user_type,subscribers
-superuser,superuser_pass,SuperUser,0
-elly,pass,ordinary,0
+username,password,user_type,subscribers,balence
+superuser,superuser_pass,SuperUser,0,7.0
+elly,pass,ordinary,0,22.0
+eric,newpass,ordinary,0,0

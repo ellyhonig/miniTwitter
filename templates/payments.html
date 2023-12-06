@@ -21,7 +21,13 @@
     <form action="{{ url_for('delete_profile') }}" method="post">
         <button type="submit">Delete Profile</button>
     </form>
-
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
 
     <a href="{{ url_for('homepage') }}">Back to Home</a>
 </body>

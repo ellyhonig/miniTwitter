@@ -2,9 +2,10 @@ import csv
 import os
 
 class SuperUser:
-    def __init__(self, profile_manager,application_manager):
-        self.application_manager = application_manager
+    def __init__(self, profile_manager, application_manager, warning_manager):
         self.profile_manager = profile_manager
+        self.application_manager = application_manager
+        self.warning_manager = warning_manager
         self.ensure_super_user_exists()
 
     def ensure_super_user_exists(self):
@@ -32,4 +33,16 @@ class SuperUser:
         else:
             self.application_manager.update_application(username, 'Rejected', rejection_reason=rejection_reason)    
     def delete_user(self, username):
-        self.profile_manager.delete_profile(username)        
+        self.profile_manager.delete_profile(username)     
+    def remove_warning(self, accused_user, accuser_user):
+        # remove warning for accused user
+        self.warning_manager.remove_warning(accused_user, accuser_user)
+
+        # new warning to the accuser if the accuser is not a surfer
+        user_type = self.profile_manager.get_user_type(accuser_user)
+        if user_type != 'Surfer':
+            self.warning_manager.add_warning(accuser_user, 'superuser')
+
+        # accuser is a surfer, add 3 subscribers to the accused user
+        elif user_type == 'Surfer':
+            self.profile_manager.add_subscribers(accused_user, 3)     

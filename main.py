@@ -4,6 +4,8 @@ from login_manager import LoginManager
 from profile_manager import ProfileManager
 from super_user import SuperUser
 from application_manager import ApplicationManager
+from warning_manager import WarningManager
+from tweet_manager import TweetManager
 import os
 import csv
 
@@ -15,10 +17,12 @@ db_tweets = []
 info = [""]
 '''message, author, likes, dislikes'''
 
-login_manager = LoginManager() #contains currently logged in user's info
-profile_manager = ProfileManager(login_manager) #edits profiles.csv
-application_manager = ApplicationManager()
-super_user = SuperUser(profile_manager, application_manager)
+login_manager = LoginManager()  # currently logged in user's info
+profile_manager = ProfileManager(login_manager)  # edits profiles.csv
+application_manager = ApplicationManager()  # edits register.csv
+warning_manager = WarningManager()  # edits warnings.csv
+super_user = SuperUser(profile_manager, application_manager, warning_manager)
+tweet_manager = TweetManager(login_manager=login_manager, warning_manager=warning_manager, profile_manager=profile_manager)
 
 
 @app.route('/')
@@ -47,13 +51,18 @@ def login():
     username = request.form['username']
     password = request.form['password']
     message, success = login_manager.login(username, password)
-    flash(message)
+
     if success:
+        # Check for temp password or more than 3 warnings
+        if password == "temp" or warning_manager.count_warnings(username) > 3:
+            return redirect(url_for('payments_page'))
+
+        # Redirect based on user type
         user_type = login_manager.current_user['user_type']
-        # Get the redirect function based on user type or use default
         redirect_func = user_type_redirect.get(user_type, user_type_redirect['default'])
         return redirect_func()
     else:
+        flash(message)
         return render_template('login.html')
 
 
@@ -108,15 +117,51 @@ def reject_application():
     super_user.manage_application(username, accept=False, rejection_reason=rejection_reason)
     return redirect(url_for('application_manager_page'))
 
-@app.route('/tweets')
-def tweetsPage():
-    return render_template('tweets.html', db_tweets = db_tweets)
+@app.route('/tweets', methods=['GET', 'POST'])
+def tweets_page():
+    if request.method == 'POST':
+        content = request.form['content']
+        keywords = request.form['keywords']
+        success, message = tweet_manager.post_tweet(content, keywords)
+        flash(message)
+        if not success:
+            return redirect(url_for('tweets_page'))
 
-@app.route('/tweets', methods = ['POST'])
-def tweetsPage_post():
-    '''form = Message(request.form)'''
-    db_tweets.append((request.form['message'], logged_in[0], 0, 0))
-    return render_template('tweets.html', db_tweets = db_tweets)
+    tweets = tweet_manager.get_all_tweets()
+    for tweet in tweets:
+        tweet['likes'] = tweet_manager.count_likes(tweet['liker_list'])
+    return render_template('tweets.html', tweets=tweets)
+
+    
+@app.route('/like_tweet/<int:tweet_index>', methods=['POST'])
+def like_tweet(tweet_index):
+    tweet_manager.like_tweet(tweet_index, login_manager.current_user['username'])
+    return redirect(url_for('tweets_page'))
+
+@app.route('/dislike_tweet/<int:tweet_index>', methods=['POST'])
+def dislike_tweet(tweet_index):
+    tweet_manager.dislike_tweet(tweet_index, login_manager.current_user['username'])
+    return redirect(url_for('tweets_page'))
+
+@app.route('/complain_tweet/<int:tweet_index>', methods=['POST'])
+def complain_tweet(tweet_index):
+    tweet_manager.complain_tweet(tweet_index)
+    return redirect(url_for('tweets_page'))
+
+@app.route('/comment_tweet/<tweet_index>', methods=['POST'])
+def comment_tweet(tweet_index):
+    comment = request.form['comment']
+    username = login_manager.current_user['username']
+    tweet_manager.comment_tweet(tweet_index, comment, username)
+    return redirect(url_for('tweets_page'))
+@app.route('/tip_tweet/<author>', methods=['POST'])
+def tip_tweet(author):
+    tip_amount = 1  
+    tipper_username = login_manager.current_user['username']
+
+    success, message = profile_manager.tip_user(tipper_username, author, tip_amount)
+    flash(message)
+    return redirect(url_for('tweets_page'))  
 
 @app.route('/administrative')
 def administrative_page():
@@ -126,6 +171,13 @@ def administrative_page():
 def user_management():
     users = profile_manager.get_all_profiles()
     return render_template('user_management.html', users=users)
+
+@app.route('/warn_user/<username>', methods=['POST'])
+def warn_user(username):
+    accuser = 'superuser' 
+    warning_manager.add_warning(username, accuser)
+    flash(f"Warning issued to {username}.")
+    return redirect(url_for('user_management'))
 
 @app.route('/delete-user/<username>', methods=['POST'])
 def delete_user(username):
@@ -138,3 +190,47 @@ def add_profile():
     user_type = request.form['user_type']
     super_user.add_profile(username, password, user_type, '0') 
     return redirect(url_for('user_management'))    
+@app.route('/disputes')
+def disputes():
+    disputed_warnings = warning_manager.get_disputed_warnings()
+    return render_template('disputes.html', disputed_warnings=disputed_warnings)
+
+@app.route('/remove-warning/<accused_user>/<accuser_user>', methods=['POST'])
+def remove_warning(accused_user, accuser_user):
+    super_user.remove_warning(accused_user, accuser_user)
+    return redirect(url_for('disputes'))    
+@app.route('/payments')
+def payments_page():
+    return render_template('payments.html')
+
+@app.route('/change_password', methods=['POST'])
+def change_password():
+    new_password = request.form['new_password']
+    username = login_manager.current_user['username']
+    profile_manager.change_password(username, new_password)
+    return redirect(url_for('homepage'))
+
+@app.route('/deposit', methods=['POST'])
+def deposit():
+    username = login_manager.current_user['username']
+    profile_manager.update_balance(username, 10, add=True)
+    return redirect(url_for('payments_page'))
+
+@app.route('/pay_fine', methods=['POST'])
+def pay_fine():
+    username = login_manager.current_user['username']
+    balance = profile_manager.get_balance(username)
+    if balance >= 10:
+        profile_manager.update_balance(username, 10, add=False)
+        warning_manager.remove_all_warnings(username)
+        # Redirect with a success message
+        flash("Fine paid successfully.")
+    else:
+        # Redirect with an error message
+        flash("Insufficient balance to pay the fine.")
+    return redirect(url_for('payments_page'))
+@app.route('/delete_profile', methods=['POST'])
+def delete_profile():
+    username = login_manager.current_user['username']
+    profile_manager.delete_profile(username)
+    return redirect(url_for('homepage'))    
