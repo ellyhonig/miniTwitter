@@ -1,53 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Homepage</title>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
     <link rel="stylesheet" href="./test.css">
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
         .center {
-    margin: auto;
-    text-align: center;
-    width: 50%;
-    padding: 10px;
-    }
+            margin: auto;
+            text-align: center;
+            width: 50%;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #3498db; /* Blue color */
+        }
+
+        a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px;
+            background-color: #3498db; /* Blue color */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        a:hover {
+            background-color: #2980b9; /* Darker blue color on hover */
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ecf0f1; /* Light gray background */
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50; /* Dark gray color */
+        }
+
+        input {
+            width: calc(100% - 16px);
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #2ecc71; /* Green color */
+            color: white;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #27ae60; /* Darker green color on hover */
+        }
     </style>
-    </head>
-    <body>
+</head>
+<body>
 
-        <div class="center">
-            <h2 class ="heading"><b>My Profile</b></h2>
-    
-          <a href="{{ url_for('homepage') }}">Home</a>
-          <a href="{{ url_for('tweetsPage') }}">Tweets</a>
-          <a href="{{ url_for('registerPage') }}">Register</a>
-          <a href="{{ url_for('loginPage') }}">Login</a>
-          <a href="{{ url_for('profilePage') }}">Profile</a>
+    <div class="center">
+        <h2><b>My Profile</b></h2>
 
+        <a href="{{ url_for('homepage') }}">Home</a>
+        <a href="{{ url_for('tweetsPage') }}">Tweets</a>
+        <a href="{{ url_for('registerPage') }}">Register</a>
+        <a href="{{ url_for('loginPage') }}">Login</a>
+        <a href="{{ url_for('profilePage') }}">Profile</a>
 
-    
-            <form method = "POST">
-              <label for="profilename">Profile Name:</label>
-              <input name = "profilename"><br><br>
-              <label for="location">Location:</label>
-              <input name = "location"><br><br>
-              <label for="birthday">Birthday:</label>
-              <input name = "birthday"><br><br>
-              <input type = "submit"><br><br>
-              
-            </form>
-          </div>
-        </div>
+        <form method="POST">
+            <label for="profilename">Profile Name:</label>
+            <input name="profilename" required><br><br>
+            <label for="location">Location:</label>
+            <input name="location" required><br><br>
+            <label for="birthday">Birthday:</label>
+            <input name="birthday" required><br><br>
+            <input type="submit" value="Update Profile"><br><br>
+        </form>
+    </div>
 
-        
-
-        
-
-
-
-  
-   
-    </body>
+</body>
 </html>

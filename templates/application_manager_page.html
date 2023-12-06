@@ -1,30 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Application Manager</title>
-    <!-- ... -->
+    <!-- Add your CSS link or internal styles here -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .application-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+        }
+
+        .application {
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        a {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #2c3e50;
+        }
+    </style>
 </head>
 <body>
+
     <h1>Application Manager</h1>
-    {% for application in applications %}
-        <div>
-            <p>Applicant Username: {{ application[0] }}</p>
-            <p>Status: {{ application[2] }}</p>
-            <!-- Add more details as needed -->
-            <form action="{{ url_for('accept_application') }}" method="post">
-                <input type="hidden" name="username" value="{{ application[0] }}">
-                <label for="temp_password">Temporary Password:</label>
-                <input type="password" name="temp_password" required>
-                <input type="submit" value="Accept">
-            </form>
-            <form action="{{ url_for('reject_application') }}" method="post">
-                <input type="hidden" name="username" value="{{ application[0] }}">
-                <label for="rejection_reason">Reason for Rejection:</label>
-                <input type="text" name="rejection_reason" required>
-                <input type="submit" value="Reject">
-            </form>
-        </div>
-    {% endfor %}
+
+    <div class="application-container">
+        {% for application in applications %}
+            <div class="application">
+                <p>Applicant Username: {{ application[0] }}</p>
+                <p>Status: {{ application[2] }}</p>
+                <!-- Add more details as needed -->
+                <form action="{{ url_for('accept_application') }}" method="post">
+                    <input type="hidden" name="username" value="{{ application[0] }}">
+                    <label for="temp_password">Temporary Password:</label>
+                    <input type="password" name="temp_password" required>
+                    <input type="submit" value="Accept">
+                </form>
+                <form action="{{ url_for('reject_application') }}" method="post">
+                    <input type="hidden" name="username" value="{{ application[0] }}">
+                    <label for="rejection_reason">Reason for Rejection:</label>
+                    <input type="text" name="rejection_reason" required>
+                    <input type="submit" value="Reject">
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+
     <a href="{{ url_for('administrative_page') }}">Back to Admin Page</a>
+
 </body>
 </html>

@@ -1,31 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Homepage</title>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <title>Homepage</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
         .center {
-    margin: auto;
-    text-align: center;
-    width: 50%;
-    padding: 10px;
-    }
-    
-.box {
-  width: 400px;
-  height: 100px;
-  border: 3px solid black;
-  padding: 10px;
-  margin: auto;
-  text-align: center;
-}
-.comma-list {
+            margin: auto;
+            text-align: center;
+            width: 50%;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #3498db; /* Blue color */
+        }
+
+        a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px;
+            background-color: #3498db; /* Blue color */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        a:hover {
+            background-color: #2980b9; /* Darker blue color on hover */
+        }
+
+        .box {
+            width: 50%;
+            padding: 20px;
+            margin: auto;
+            background-color: #ffffff; /* White background */
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .comma-list {
             display: inline;
             list-style: none;
-            padding: 0px
+            padding: 0px;
         }
 
         .comma-list li {
@@ -35,39 +61,80 @@
 
         .comma-list li::after {
             content: "/";
+            margin: 0 5px;
+            color: #3498db; /* Blue color */
         }
 
         .comma-list li:last-child::after {
             content: "";
         }
 
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ecf0f1; /* Light gray background */
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50; /* Dark gray color */
+        }
+
+        input[type="text"],
+        input[type="submit"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #3498db; /* Blue color */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9; /* Darker blue color on hover */
+        }
     </style>
-    </head>
-    <body>
-        <div class="center">
+</head>
+<body>
+
+    <div class="center">
         <h2>Mini Twitter</h2>
         <a href="{{ url_for('homepage') }}">Home</a>
         <a href="{{ url_for('tweetsPage') }}">Tweets</a>
-          <a href="{{ url_for('registerPage') }}">Register</a>
-          <a href="{{ url_for('loginPage') }}">Login</a>
-          <a href="{{ url_for('profilePage') }}">Profile</a>
-
-        {% for each in db_tweets %}
-        <h3> {{each[1]}}</h3>
-        {{each[0]}}
-        <br>Likes: {{each[2]}}
-        <br>Dislikes: {{each[3]}}
-
-        {% endfor %}
-   
+        <a href="{{ url_for('registerPage') }}">Register</a>
+        <a href="{{ url_for('loginPage') }}">Login</a>
+        <a href="{{ url_for('profilePage') }}">Profile</a>
     </div>
-        <div class="center">
-        <form method = "POST">
-        <label for="message">Add Tweet</label>
-            <input name = "message"><br><br>
-            <input type = "submit"><br><br>
 
+    <div class="box center">
+        {% for each in db_tweets %}
+        <h3>{{ each[1] }}</h3>
+        {{ each[0] }}
+        <br>Likes: {{ each[2] }}
+        <br>Dislikes: {{ each[3] }}
+        <br><br>
+        {% endfor %}
+    </div>
+
+    <div class="center">
+        <form method="POST">
+            <label for="message">Add Tweet</label>
+            <input type="text" name="message" required><br><br>
+            <input type="submit" value="Submit Tweet"><br><br>
         </form>
-        </div>
-    </body>
+    </div>
+
+</body>
 </html>

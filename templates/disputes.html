@@ -1,9 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Disputes</title>
+    <!-- Add your CSS link or internal styles here -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            color: #3498db; /* Blue color */
+        }
+
+        #disputes {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+        }
+
+        .dispute {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #ffffff; /* White background */
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #e74c3c; /* Red color */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #c0392b; /* Darker red color on hover */
+        }
+
+        a {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #3498db; /* Blue color for the link */
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #2c3e50; /* Darker blue color on hover */
+        }
+    </style>
 </head>
 <body>
+
     <h1>Disputes</h1>
 
     <div id="disputes">
@@ -19,5 +79,6 @@
     </div>
 
     <a href="{{ url_for('administrative_page') }}">Back to Admin Page</a>
+
 </body>
 </html>

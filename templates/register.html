@@ -1,22 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    
+    <!-- Add your CSS link or internal styles here -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h2 {
+            text-align: center;
+            color: #3498db; /* Blue color */
+        }
+
+        form {
+            max-width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ecf0f1; /* Light gray background */
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50; /* Dark gray color */
+        }
+
+        input,
+        select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            background-color: #3498db; /* Blue color */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9; /* Darker blue color on hover */
+        }
+
+        a {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #3498db; /* Blue color for the link */
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #2c3e50; /* Darker blue color on hover */
+        }
+    </style>
 </head>
 <body>
+
     <h2>Register</h2>
     <form method="POST">
-      <label for="username">Username:</label>
-      <input name="username" required><br><br>
-      <label for="user_type">User Type:</label>
-      <select name="user_type">
-          <option value="OrdinaryUser">Ordinary User</option>
-          <option value="CorporateUser">Corporate User</option>
-        
-      </select><br><br>
-      <input type="submit" value="Register">
-  </form>
+        <label for="username">Username:</label>
+        <input name="username" required><br><br>
+        <label for="user_type">User Type:</label>
+        <select name="user_type">
+            <option value="OrdinaryUser">Ordinary User</option>
+            <option value="CorporateUser">Corporate User</option>
+        </select><br><br>
+        <input type="submit" value="Register">
+    </form>
 
     <h2>Check Application Status</h2>
     <form method="POST" action="{{ url_for('check_status') }}">
@@ -24,6 +91,8 @@
         <input name="check_username" required><br><br>
         <input type="submit" value="Check Status">
     </form>
+
     <a href="{{ url_for('homepage') }}">Back to Home</a>
+
 </body>
 </html>

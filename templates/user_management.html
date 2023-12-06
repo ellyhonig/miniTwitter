@@ -1,9 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management</title>
+    <!-- Add your CSS link or internal styles here -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            color: #3498db; /* Blue color */
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ecf0f1; /* Light gray background */
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+        }
+
+        button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            background-color: #3498db; /* Blue color */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9; /* Darker blue color on hover */
+        }
+
+        #existing-users {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .user-profile {
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #ffffff; /* White background */
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+        }
+
+        .user-profile p {
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .user-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        a {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #3498db; /* Blue color for the link */
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #2c3e50; /* Darker blue color on hover */
+        }
+    </style>
 </head>
 <body>
+
     <h1>User Management</h1>
 
     <form action="{{ url_for('add_profile') }}" method="post">
@@ -12,21 +98,25 @@
         <input type="text" name="user_type" placeholder="User Type (e.g., OrdinaryUser, CorporateUser)" required>
         <button type="submit">Add Profile</button>
     </form>
+
     <div id="existing-users">
         {% for user in users %}
         <div class="user-profile">
             <p>Username: {{ user[0] }}</p>
             <!-- Display other user details -->
-            <form action="{{ url_for('delete_user', username=user[0]) }}" method="post">
-                <button type="submit">Delete</button>
-            </form>
-            <form action="{{ url_for('warn_user', username=user[0]) }}" method="post">
-                <button type="submit">Warn User</button>
-            </form>
+            <div class="user-actions">
+                <form action="{{ url_for('delete_user', username=user[0]) }}" method="post">
+                    <button type="submit">Delete</button>
+                </form>
+                <form action="{{ url_for('warn_user', username=user[0]) }}" method="post">
+                    <button type="submit">Warn User</button>
+                </form>
+            </div>
         </div>
         {% endfor %}
     </div>
 
     <a href="{{ url_for('administrative_page') }}">Back to Admin Page</a>
+
 </body>
 </html>
