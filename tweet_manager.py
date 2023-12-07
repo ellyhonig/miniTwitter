@@ -1,6 +1,7 @@
 import csv
 from datetime import datetime
 
+
 class TweetManager:
     def __init__(self, tweets_file='tweets.csv', taboo_file='taboo_words.csv', login_manager=None, warning_manager=None, profile_manager=None):
         self.tweets_file = tweets_file
@@ -79,6 +80,7 @@ class TweetManager:
         return tweets
     def like_tweet(self, tweet_index, username):
         updated_tweets = []
+        auth = self.get_tweet_author(tweet_index)
         with open(self.tweets_file, 'r', newline='') as file:
             reader = csv.DictReader(file)
             for i, row in enumerate(reader):
@@ -92,6 +94,14 @@ class TweetManager:
             writer = csv.DictWriter(file, fieldnames=reader.fieldnames)
             writer.writeheader()
             writer.writerows(updated_tweets)
+
+        self.promote_TrendyPost
+
+        if (self.check_TrendyPost(auth)):
+            self.profile_manager.promote_TrendyUser(auth)
+        else:
+            self.profile_manager.remove_TrendyUser(auth)
+        
 
     def count_likes(self, liker_list):
         if not liker_list:
@@ -171,3 +181,47 @@ class TweetManager:
                 if i == tweet_index:
                     return row['author']
         return None
+    
+
+    
+    def check_TrendyPost(self, username):
+        count = 0
+        balance = [1]
+        with open("profiles.csv", 'r', newline='') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if row[0] == username:
+                    balance[0] = row[4] #this is for retrieving the balance
+        
+        with open("tweets.csv", 'r', newline='') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                #need to make it so that it is likes - dislikes; right now its only likes > 3 and balance check over 100
+                #supposed to be tips over 100 so maybe a separate column for tips? idk
+
+                if row[0] == username and (self.count_likes(row[7]) > 3 )  and (count >= 2) and float(balance[0]) > 100:
+                    #print(count)
+                    return True
+                elif row[0] == username and (self.count_likes(row[7]) > 3 ) and (not count >= 2):
+                    count = count + 1
+                    #print(count)
+                    
+                
+        
+        return False
+
+    def promote_TrendyPost(self):
+        updated_tweets = []
+        with open(self.tweets_file, 'r', newline='') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if self.count_likes(row[7]) > 3 :
+                    row.append("trendy")
+                updated_tweets.append(row)
+                
+        
+
+            
+
+        
+        
