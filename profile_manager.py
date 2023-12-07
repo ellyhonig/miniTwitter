@@ -116,3 +116,4 @@ class ProfileManager:
             for row in reader:
                 if row[2] == 'trendy':
                     trendyusers.append(row[0])
+         return trendyusers                
