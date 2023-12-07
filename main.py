@@ -6,6 +6,7 @@ from super_user import SuperUser
 from application_manager import ApplicationManager
 from warning_manager import WarningManager
 from tweet_manager import TweetManager
+from job_manager import JobManager
 import os
 import csv
 
@@ -23,6 +24,7 @@ application_manager = ApplicationManager()  # edits register.csv
 warning_manager = WarningManager()  # edits warnings.csv
 super_user = SuperUser(profile_manager, application_manager, warning_manager)
 tweet_manager = TweetManager(login_manager=login_manager, warning_manager=warning_manager, profile_manager=profile_manager)
+job_manager = JobManager(profile_manager=profile_manager)
 
 
 @app.route('/')
@@ -234,3 +236,34 @@ def delete_profile():
     username = login_manager.current_user['username']
     profile_manager.delete_profile(username)
     return redirect(url_for('homepage'))    
+
+
+
+@app.route('/jobs', methods=['GET', 'POST'])
+def jobs_page():
+    user_type = login_manager.current_user['user_type']  # Define user_type for both GET and POST requests
+
+    if request.method == 'POST':
+        message = request.form['message']
+        success, response_message = job_manager.post_job(message, login_manager.current_user['username'], user_type)
+        flash(response_message)
+        if not success:
+            return redirect(url_for('jobs_page'))
+
+    jobs = job_manager.get_all_jobs()
+    return render_template('jobs.html', jobs=jobs, user_type=user_type)
+@app.route('/post_job', methods=['POST'])
+def post_job():
+    message = request.form['message']
+    user_type = login_manager.current_user['user_type']
+    author = login_manager.current_user['username']
+    success, response_message = job_manager.post_job(author, message, user_type)
+    flash(response_message)
+    return redirect(url_for('jobs_page'))
+
+@app.route('/apply_job/<int:job_index>', methods=['POST'])
+def apply_job(job_index):
+    applicant = login_manager.current_user['username']
+    success, response_message = job_manager.apply(job_index, applicant)
+    flash(response_message)
+    return redirect(url_for('jobs_page'))    

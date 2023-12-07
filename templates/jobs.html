@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Listings</title>
+</head>
+<body>
+    <h1>Job Listings</h1>
+
+    {% if user_type != 'Surfer' %}
+        <form action="{{ url_for('jobs_page') }}" method="post">
+            <textarea name="message" placeholder="Post a job listing..." required></textarea>
+            <button type="submit">Post Job</button>
+        </form>
+        {% if user_type == 'OrdinaryUser' or user_type == 'TrendyUser' %}
+            <p>Note: Posting as an Ordinary or Trendy User will result in a fine and warning.</p>
+        {% endif %}
+    {% else %}
+        <p>Must be logged in to post job listings.</p>
+    {% endif %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  <div id="jobs">
+    {% for job in jobs %}
+        <div class="job">
+            <p>Message: {{ job['author'] }}</p>
+            <p>Posted by: {{ job['message'] }}</p>
+            <p>Applicants: {{ job['applicants'] }}</p>
+            {% if user_type != 'Surfer' %}
+                <form action="{{ url_for('apply_job', job_index=loop.index0) }}" method="post">
+                    <button type="submit">Apply</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+    
+
+    <a href="{{ url_for('homepage') }}">Back to Home</a>
+</body>
+</html>
