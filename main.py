@@ -89,7 +89,21 @@ def check_status():
 
 @app.route('/myprofile')
 def profilePage():
-    return render_template('myprofile.html')
+    username = login_manager.current_user['username']
+    profile_info = profile_manager.get_profile_info(username, warning_manager)
+    return render_template('myprofile.html', profile_info=profile_info)
+@app.route('/dispute_warnings')
+def dispute_warnings():
+    username = login_manager.current_user['username']
+    warnings = warning_manager.get_user_warnings(username)
+    return render_template('dispute_warnings.html', warnings=warnings)
+
+@app.route('/dispute_warning/<int:warning_index>', methods=['POST'])
+def dispute_warning(warning_index):
+    username = login_manager.current_user['username']
+    success, message = warning_manager.dispute_warning(username, warning_index)
+    flash(message)
+    return redirect(url_for('dispute_warnings'))
 
 
 @app.route('/myprofileChange')

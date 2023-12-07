@@ -3,7 +3,7 @@ import csv
 class ProfileManager:
     def __init__(self, login_manager):
         self.login_manager = login_manager
-
+    
     def add_profile(self, username, password, user_type, subscribers, balance=0):
         with open('profiles.csv', 'a', newline='') as file:
             writer = csv.writer(file)
@@ -19,6 +19,22 @@ class ProfileManager:
         with open('profiles.csv', 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(updated_profiles)
+    def get_profile_info(self, username, warning_manager):
+        profile_info = {}
+        with open('profiles.csv', 'r', newline='') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['username'] == username:
+                    profile_info = {
+                        'username': row['username'],
+                        'password': row['password'],
+                        'balance': row['balence'],  # Update this line
+                        'subscribers': row['subscribers'],
+                        'warnings': warning_manager.count_warnings(username),
+                        'user_type': row['user_type']
+                    }
+                    break
+        return profile_info
 
     def get_all_profiles(self):
         profiles = []

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dispute Warnings</title>
+</head>
+<body>
+    <h1>Dispute Warnings</h1>
+    {% for warning in warnings %}
+        <div>
+            <p>Warning from: {{ warning['accuser_user'] }}</p>
+            
+            <form action="{{ url_for('dispute_warning', warning_index=loop.index0) }}" method="post">
+                <button type="submit">Dispute Warning</button>
+            </form>
+        </div>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    {% endfor %}
+    <a href="{{ url_for('profilePage') }}">Back to Profile</a>
+</body>
+</html>
