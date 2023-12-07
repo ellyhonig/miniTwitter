@@ -92,30 +92,3 @@ class ProfileManager:
         self.update_balance(tipper_username, amount, add=False)
         self.update_balance(recipient_username, amount, add=True)
         return True, "Tip successful."    
-    
-
-    def promote_TrendyUser(self, username):
-        updated_profiles = []
-        with open('profiles.csv', 'r', newline='') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                if row[0] == username:
-                    row[2] = "trendy"
-                updated_profiles.append(row)
-
-        with open('profiles.csv', 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerows(updated_profiles)
-    
-    def remove_TrendyUser(self, username):
-        updated_profiles = []
-        with open('profiles.csv', 'r', newline='') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                if row[0] == username:
-                    row[2] = "ordinary"
-                updated_profiles.append(row)
-
-        with open('profiles.csv', 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerows(updated_profiles)
