@@ -52,6 +52,37 @@ user_type_redirect = {
     'default': redirect_other_user,
 }
 
+
+
+
+
+@app.route('/subscribe_user', methods=['POST'])
+def subscribe_user():
+    username = request.form['username']
+    # Add the current user as a subscriber to the chosen user
+    profile_manager.add_subscribers(username, 1)
+    flash('Subscribed successfully!', 'success')
+    return redirect(url_for('homepage'))
+@app.route('/tip_user', methods=['POST'])
+def tip_user():
+    username = request.form['username']
+    amount = float(request.form['amount'])
+    tipper_username = login_manager.current_user['username']  # Get the current user's username from login_manager
+
+    success, message = profile_manager.tip_user(tipper_username, username, amount)
+    flash(message)
+    return redirect(url_for('homepage'))
+
+@app.route('/complain_user', methods=['POST'])
+def complain_user():
+    username = request.form['username']
+    current_user_username = login_manager.current_user['username']
+    warning_manager.add_warning(username, current_user_username)
+    flash('Complaint filed successfully!', 'success')
+    return redirect(url_for('homepage'))
+
+
+
 @app.route('/login')
 def loginPage():
     return render_template('login.html')

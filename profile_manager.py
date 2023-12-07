@@ -52,19 +52,20 @@ class ProfileManager:
         return None
     def add_subscribers(self, username, additional_subscribers):
         updated_profiles = []
-        subscriber_index = 4  
-        print('subs added')
+        subscriber_index = 3
         with open('profiles.csv', 'r', newline='') as file:
             reader = csv.reader(file)
             for row in reader:
                 if row[0] == username:
-                    current_subscribers = int(row[subscriber_index])
+                    # Convert to float first to handle cases where the value might be a float
+                    current_subscribers = int(float(row[subscriber_index]))
                     row[subscriber_index] = str(current_subscribers + additional_subscribers)
                 updated_profiles.append(row)
 
         with open('profiles.csv', 'w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerows(updated_profiles)    
+            writer.writerows(updated_profiles)
+
     def change_password(self, username, new_password):
         updated_rows = []
         with open('profiles.csv', 'r', newline='') as file:

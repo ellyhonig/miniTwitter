@@ -8,87 +8,59 @@
     <link rel="stylesheet" href="./test.css">
     <style>
         .center {
-    margin: auto;
-    text-align: center;
-    width: 50%;
-    padding: 10px;
-    }
+            margin: auto;
+            text-align: center;
+            width: 50%;
+            padding: 10px;
+        }
     </style>
-    </head>
-    <body>
+</head>
+<body>
 
+    <div class="center">
+        <h2 class ="heading"><b>Home</b></h2>
+ 
+        <!-- Navigation Links -->
+        <a href="{{ url_for('homepage') }}">Home</a>
+        <a href="{{ url_for('tweets_page') }}">Tweets</a>
+        <a href="{{ url_for('registerPage') }}">Register</a>
+        <a href="{{ url_for('loginPage') }}">Login</a>
+        <a href="{{ url_for('profilePage') }}">Profile</a>
+        <a href="{{ url_for('jobs_page') }}">View Job Listings/Ads</a>
+    
         <div class="center">
-            <h2 class ="heading"><b>Home</b></h2>
-     
-          <a href="{{ url_for('homepage') }}">Home</a>
-          <a href="{{ url_for('tweets_page') }}">Tweets</a>
-          <a href="{{ url_for('registerPage') }}">Register</a>
-          <a href="{{ url_for('loginPage') }}">Login</a>
-          <a href="{{ url_for('profilePage') }}">Profile</a>
-          <a href="{{ url_for('jobs_page') }}">View Job Listings/Ads</a>
-        
-          
-        <div class = center>
             {% for user in trendyusers %}
-            <p> Trendy User: {{user}}</p>
+                <p> Top Trendy User: {{ user }}</p>
+                <!-- Subscribe, Tip, and Complain buttons for each user -->
+                <form action="/subscribe_user" method="post">
+                    <input type="hidden" name="username" value="{{ user }}">
+                    <button type="submit">Subscribe</button>
+                </form>
+                <form action="/tip_user" method="post">
+                    <input type="hidden" name="username" value="{{ user }}">
+                    <input type="number" name="amount" placeholder="Amount">
+                    <button type="submit">Tip</button>
+                </form>
+                <form action="/complain_user" method="post">
+                    <input type="hidden" name="username" value="{{ user }}">
+                    <button type="submit">Complain</button>
+                </form>
             {% endfor %}
-        
-        </div>
-
-          <div id="tweets">
-            {% for tweet in tweets %}
-                <div class="tweet">
-                    <p>{{ tweet['author'] }}: {{ tweet['content'] }}</p>
-                    <p>Keywords: {{ tweet['keyword_list'] }}</p>
-                    <p>Views: {{ tweet['views'] }}</p>
-                    <p>Likes: {{ tweet['likes'] }} | Dislikes: {{ tweet['dislikes'] }}</p>
-                    <p>Complaints: {{ tweet['complaints'] }}</p>
-                    <form action="{{ url_for('like_tweet', tweet_index=loop.index0) }}" method="post">
-                        <button type="submit">Like</button>
-                    </form>
-                    <form action="{{ url_for('dislike_tweet', tweet_index=loop.index0) }}" method="post">
-                        <button type="submit">Dislike</button>
-                    </form>
-                    <form action="{{ url_for('complain_tweet', tweet_index=loop.index0) }}" method="post">
-                        <button type="submit">Complain</button>
-                    </form>
-                    {% if user_type != 'Surfer' %}
-                    <form action="{{ url_for('tip_tweet', author=tweet['author']) }}" method="post">
-                        <button type="submit">Tip $1</button>
-                    </form>
-                    {% with messages = get_flashed_messages() %}
-    
-                {% if messages %}
-                    <ul class="flashes">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div id="flash-messages">
                     {% for message in messages %}
-                        <li>{{ message }}</li>
+                        <div class="flash-message">{{ message }}</div>
                     {% endfor %}
-                    </ul>
-                {% endif %}
-               {% endwith %}
-    
-                    {% endif %}
-                    <form action="{{ url_for('comment_tweet', tweet_index=loop.index0) }}" method="post">
-                        <input type="text" name="comment" placeholder="Add a comment...">
-                        <button type="submit">Comment</button>
-                    </form>
-                    <div class="comments">
-                        <p>Comments:</p>
-                        {% for comment in tweet['comments'].split('|||') %}
-                            <p>{{ comment }}</p>
-                        {% endfor %}
-                    </div>
                 </div>
-            {% endfor %}
+            {% endif %}
+        {% endwith %}
         </div>
 
-        
+        <!-- Tweets Section -->
+        <div id="tweets">
+            <!-- Existing code for displaying tweets -->
         </div>
-        
-
-
-
-  
-   
-    </body>
+    </div>
+</body>
 </html>
