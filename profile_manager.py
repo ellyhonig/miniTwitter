@@ -108,3 +108,11 @@ class ProfileManager:
         self.update_balance(tipper_username, amount, add=False)
         self.update_balance(recipient_username, amount, add=True)
         return True, "Tip successful."    
+
+    def get_trendyusers(self):
+         trendyusers = []
+         with open('profiles.csv', 'r', newline='') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if row[2] == 'trendy':
+                    trendyusers.append(row[0])

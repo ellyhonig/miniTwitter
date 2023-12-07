@@ -171,3 +171,13 @@ class TweetManager:
                 if i == tweet_index:
                     return row['author']
         return None
+    
+
+    def get_trendytweets(self):
+        tweets = []
+        with open(self.tweets_file, 'r', newline='') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if self.count_likes(row['liker_list']) - int(row['dislikes']) > 3:
+                    tweets.append(row)
+        return tweets

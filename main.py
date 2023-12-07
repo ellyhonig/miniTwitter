@@ -29,7 +29,15 @@ job_manager = JobManager(profile_manager=profile_manager)
 
 @app.route('/')
 def homepage():
-    return render_template('home.html')
+    trendyusers = profile_manager.get_trendyusers()
+    tweets = tweet_manager.get_trendytweets()
+    for tweet in tweets:
+        tweet['likes'] = tweet_manager.count_likes(tweet['liker_list'])
+
+    if trendyusers is None:
+        return render_template('home.html', tweets = tweets[:3], trendyusers = ['None'])
+    else:
+        return render_template('home.html', tweets = tweets[:3], trendyusers = trendyusers)
 
 def redirect_super_user():
     return redirect(url_for('administrative_page'))
