@@ -31,13 +31,18 @@ job_manager = JobManager(profile_manager=profile_manager)
 def homepage():
     trendyusers = profile_manager.get_trendyusers()
     tweets = tweet_manager.get_trendytweets()
+    topthree = tweet_manager.get_topthree()
+ 
+
     for tweet in tweets:
         tweet['likes'] = tweet_manager.count_likes(tweet['liker_list'])
+    
+    
 
     if trendyusers is None:
-        return render_template('home.html', tweets = tweets[:3], trendyusers = ['None'])
+        return render_template('home.html', tweets = tweets[:3], trendyusers = ['None'], topthree = topthree)
     else:
-        return render_template('home.html', tweets = tweets[:3], trendyusers = trendyusers)
+        return render_template('home.html', tweets = tweets[:3], trendyusers = trendyusers, topthree = topthree)
 
 def redirect_super_user():
     return redirect(url_for('administrative_page'))

@@ -59,6 +59,50 @@
 
         <!-- Tweets Section -->
         <div id="tweets">
+            {% for tweet in topthree %}
+            <div class="tweet">
+                <p>{{ tweet['author'] }}: {{ tweet['content'] }}</p>
+                <p>Keywords: {{ tweet['keyword_list'] }}</p>
+                <p>Views: {{ tweet['views'] }}</p>
+                <p>Likes: {{ tweet['likes'] }} | Dislikes: {{ tweet['dislikes'] }}</p>
+                <p>Complaints: {{ tweet['complaints'] }}</p>
+                <form action="{{ url_for('like_tweet', tweet_index=loop.index0) }}" method="post">
+                    <button type="submit">Like</button>
+                </form>
+                <form action="{{ url_for('dislike_tweet', tweet_index=loop.index0) }}" method="post">
+                    <button type="submit">Dislike</button>
+                </form>
+                <form action="{{ url_for('complain_tweet', tweet_index=loop.index0) }}" method="post">
+                    <button type="submit">Complain</button>
+                </form>
+                {% if user_type != 'Surfer' %}
+                <form action="{{ url_for('tip_tweet', author=tweet['author']) }}" method="post">
+                    <button type="submit">Tip $1</button>
+                </form>
+                {% with messages = get_flashed_messages() %}
+
+            {% if messages %}
+                <ul class="flashes">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+           {% endwith %}
+
+                {% endif %}
+                <form action="{{ url_for('comment_tweet', tweet_index=loop.index0) }}" method="post">
+                    <input type="text" name="comment" placeholder="Add a comment...">
+                    <button type="submit">Comment</button>
+                </form>
+                <div class="comments">
+                    <p>Comments:</p>
+                    {% for comment in tweet['comments'].split('|||') %}
+                        <p>{{ comment }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
             <!-- Existing code for displaying tweets -->
         </div>
     </div>
