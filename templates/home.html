@@ -20,7 +20,7 @@
     <div class="center">
         <h2 class ="heading"><b>Home</b></h2>
  
-        <!-- Navigation Links -->
+ 
         <a href="{{ url_for('homepage') }}">Home</a>
         <a href="{{ url_for('tweets_page') }}">Tweets</a>
         <a href="{{ url_for('registerPage') }}">Register</a>
@@ -34,7 +34,7 @@
             <h3>Trendy Profiles</h3>
             {% for user in trendyusers %}
                 <p> Top Trendy User: {{ user }}</p>
-                <!-- Subscribe, Tip, and Complain buttons for each user -->
+            
                 <form action="/subscribe_user" method="post">
                     <input type="hidden" name="username" value="{{ user }}">
                     <button type="submit">Subscribe</button>
@@ -60,7 +60,7 @@
         {% endwith %}
         </div>
 
-        <!-- Tweets Section -->
+
         <div id="tweets">
             <h3>Top Trendy Tweets</h3>
             {% for tweet in topthree %}
@@ -107,7 +107,7 @@
                 </div>
             </div>
         {% endfor %}
-            <!-- Existing code for displaying tweets -->
+    
         </div>
     </div>
 </body>

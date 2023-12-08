@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Application Manager</title>
-    <!-- ... -->
+
 </head>
 <body>
     <h1>Application Manager</h1>
@@ -10,7 +10,7 @@
         <div>
             <p>Applicant Username: {{ application[0] }}</p>
             <p>Status: {{ application[2] }}</p>
-            <!-- Add more details as needed -->
+
             <form action="{{ url_for('accept_application') }}" method="post">
                 <input type="hidden" name="username" value="{{ application[0] }}">
                 <label for="temp_password">Temporary Password:</label>

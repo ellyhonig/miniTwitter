@@ -16,7 +16,7 @@
         {% for user in users %}
         <div class="user-profile">
             <p>Username: {{ user[0] }}</p>
-            <!-- Display other user details -->
+    
             <form action="{{ url_for('delete_user', username=user[0]) }}" method="post">
                 <button type="submit">Delete</button>
             </form>
