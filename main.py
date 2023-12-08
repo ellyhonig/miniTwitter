@@ -51,7 +51,7 @@ def redirect_super_user():
 def redirect_other_user():
     return redirect(url_for('homepage'))
 
-# Dictionary for redirect on login
+
 user_type_redirect = {
     'SuperUser': redirect_super_user,
     
@@ -88,7 +88,6 @@ def make_move():
 @app.route('/subscribe_user', methods=['POST'])
 def subscribe_user():
     username = request.form['username']
-    # Add the current user as a subscriber to the chosen user
     profile_manager.add_subscribers(username, 1)
     flash('Subscribed successfully!', 'success')
     return redirect(url_for('homepage'))
@@ -123,11 +122,9 @@ def login():
     message, success = login_manager.login(username, password)
 
     if success:
-        # Check for temp password or more than 3 warnings
         if password == "temp" or warning_manager.count_warnings(username) > 3:
             return redirect(url_for('payments_page'))
 
-        # Redirect based on user type
         user_type = login_manager.current_user['user_type']
         redirect_func = user_type_redirect.get(user_type, user_type_redirect['default'])
         return redirect_func()
@@ -307,10 +304,8 @@ def pay_fine():
     if balance >= 10:
         profile_manager.update_balance(username, 10, add=False)
         warning_manager.remove_all_warnings(username)
-        # Redirect with a success message
         flash("Fine paid successfully.")
     else:
-        # Redirect with an error message
         flash("Insufficient balance to pay the fine.")
     return redirect(url_for('payments_page'))
 @app.route('/delete_profile', methods=['POST'])
@@ -323,7 +318,7 @@ def delete_profile():
 
 @app.route('/jobs', methods=['GET', 'POST'])
 def jobs_page():
-    user_type = login_manager.current_user['user_type']  # Define user_type for both GET and POST requests
+    user_type = login_manager.current_user['user_type']  
 
     if request.method == 'POST':
         message = request.form['message']

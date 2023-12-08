@@ -9,7 +9,7 @@ class WarningManager:
         with open(self.warnings_file, 'r', newline='') as file:
             reader = csv.reader(file)
             for row in reader:
-                if row[2] == 'true':  #  disputed is the third column
+                if row[2] == 'true': 
                     disputed_warnings.append(row)
         return disputed_warnings
     def get_user_warnings(self, username):
@@ -25,7 +25,7 @@ class WarningManager:
         with open(self.warnings_file, 'r', newline='') as file:
             reader = csv.reader(file)
             for row in reader:
-            #if no accuser given, remove any with accused. if accuser give, must match
+            
                 if not (row[0] == accused_user and (accuser_user is None or row[1] == accuser_user)):
                     updated_warnings.append(row)
     def dispute_warning(self, username, warning_index):
@@ -57,7 +57,7 @@ class WarningManager:
         with open(self.warnings_file, 'r', newline='') as file:
             reader = csv.reader(file)
             for row in reader:
-                if len(row) > 0 and row[0] == username:  # Check if row has elements and the first element matches the username
+                if len(row) > 0 and row[0] == username:  
                     count += 1
         return count
 

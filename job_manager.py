@@ -34,9 +34,9 @@ class JobManager:
         message = ""
         with open(self.job_file, 'r', newline='') as file:
             reader = csv.reader(file)
-            next(reader)  # Skip the header row
-            for i, row in enumerate(reader, start=1):  # Start counting from 1
-                print(f"Row {i}: {row}")  # Debugging print
+            next(reader) 
+            for i, row in enumerate(reader, start=1):  
+                print(f"Row {i}: {row}")  
                 if len(row) < 3:
                     print(f"Skipping malformed row {i}: {row}")
                     continue

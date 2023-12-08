@@ -28,7 +28,7 @@ class ProfileManager:
                     profile_info = {
                         'username': row['username'],
                         'password': row['password'],
-                        'balance': row['balence'],  # Update this line
+                        'balance': row['balence'],  
                         'subscribers': row['subscribers'],
                         'warnings': warning_manager.count_warnings(username),
                         'user_type': row['user_type']
@@ -57,7 +57,7 @@ class ProfileManager:
             reader = csv.reader(file)
             for row in reader:
                 if row[0] == username:
-                    # Convert to float first to handle cases where the value might be a float
+                   
                     current_subscribers = int(float(row[subscriber_index]))
                     row[subscriber_index] = str(current_subscribers + additional_subscribers)
                 updated_profiles.append(row)
@@ -100,7 +100,7 @@ class ProfileManager:
             for row in reader:
                 if row[0] == username:
                     return float(row[4])  
-        return 0  # ret 0 if user not found
+        return 0  
     
     def tip_user(self, tipper_username, recipient_username, amount):
         if self.get_balance(tipper_username) < amount:

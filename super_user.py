@@ -35,14 +35,11 @@ class SuperUser:
     def delete_user(self, username):
         self.profile_manager.delete_profile(username)     
     def remove_warning(self, accused_user, accuser_user):
-        # remove warning for accused user
         self.warning_manager.remove_warning(accused_user, accuser_user)
 
-        # new warning to the accuser if the accuser is not a surfer
         user_type = self.profile_manager.get_user_type(accuser_user)
         if user_type != 'Surfer':
             self.warning_manager.add_warning(accuser_user, 'superuser')
 
-        # accuser is a surfer, add 3 subscribers to the accused user
         elif user_type == 'Surfer':
             self.profile_manager.add_subscribers(accused_user, 3)     

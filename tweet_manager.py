@@ -27,7 +27,6 @@ class TweetManager:
         liker_list = ""
         dislikes = 0
 
-        # Word count and billing logic
         word_count = len(content.split())
         user_balance = self.profile_manager.get_balance(author)
         cost = self.calculate_cost(word_count, self.login_manager.current_user['user_type'])
@@ -35,7 +34,6 @@ class TweetManager:
         if cost > user_balance:
             return False, "Insufficient balance to post tweet."
 
-        # Deduct cost from user's balance
         self.profile_manager.update_balance(author, user_balance - cost)
 
         with open(self.tweets_file, 'a', newline='') as file:
@@ -111,10 +109,9 @@ class TweetManager:
             for row in reader:
                 updated_tweets.append(row)
 
-        tweet_index = int(tweet_index)  # Convert tweet_index to integer
+        tweet_index = int(tweet_index) 
         if tweet_index < len(updated_tweets):
             updated_tweets[tweet_index]['complaints'] = str(int(updated_tweets[tweet_index].get('complaints', 0)) + 1)
-            # Add a warning to the author of the tweet
             tweet_author = updated_tweets[tweet_index]['author']
             self.warning_manager.add_warning(tweet_author, self.login_manager.current_user['username'])
 
@@ -122,7 +119,6 @@ class TweetManager:
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
             for tweet in updated_tweets:
-                # Ensure each dictionary has all the required fields
                 tweet_row = {fieldname: tweet.get(fieldname, '') for fieldname in fieldnames}
                 writer.writerow(tweet_row)
 

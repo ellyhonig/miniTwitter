@@ -8,7 +8,7 @@ class ApplicationManager:
         applications = []
         with open(self.registration_file, 'r', newline='') as file:
             reader = csv.reader(file)
-            next(reader, None)  # Skip the header
+            next(reader, None)  
             for row in reader:
                 applications.append(row)
         return applications
