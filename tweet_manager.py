@@ -181,3 +181,28 @@ class TweetManager:
                 if self.count_likes(row['liker_list']) - int(row['dislikes']) > 3:
                     tweets.append(row)
         return tweets
+    
+    def get_topthree(self):
+        temp = []
+        tweets = []
+        with open(self.tweets_file, 'r', newline='') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                    row['likes'] = self.count_likes(row['liker_list'])
+                    tweets.append(row)
+
+        tweets = sorted(tweets, key=lambda x: x['likes'])
+        
+        tweets = tweets[-3:]
+
+        temp = tweets[::-1]
+
+
+      
+
+        
+
+
+        
+      
+        return temp
