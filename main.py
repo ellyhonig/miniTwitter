@@ -7,6 +7,7 @@ from application_manager import ApplicationManager
 from warning_manager import WarningManager
 from tweet_manager import TweetManager
 from job_manager import JobManager
+from game_manager import GameManager
 import os
 import csv
 
@@ -25,7 +26,7 @@ warning_manager = WarningManager()  # edits warnings.csv
 super_user = SuperUser(profile_manager, application_manager, warning_manager)
 tweet_manager = TweetManager(login_manager=login_manager, warning_manager=warning_manager, profile_manager=profile_manager)
 job_manager = JobManager(profile_manager=profile_manager)
-
+game_manager = GameManager(login_manager=login_manager)
 
 @app.route('/')
 def homepage():
@@ -55,6 +56,29 @@ user_type_redirect = {
 
 
 
+@app.route('/game_page')
+def game_page():
+    current_user = login_manager.current_user['username']
+    games = game_manager.get_games_for_user(current_user)
+    return render_template('games.html', games=games, current_user=current_user)
+
+
+@app.route('/start_game', methods=['POST'])
+def start_game():
+    opponent_id = request.form['opponent_id']
+    game_id = game_manager.new_game(opponent_id)
+    return redirect(url_for('game_page'))
+
+@app.route('/make_move', methods=['POST'])
+def make_move():
+    game_id = request.form['game_id']
+    cell_index = int(request.form['cell_index'])
+    row, col = divmod(cell_index, 3)
+    game_manager.add_move(game_id, row, col)
+    winner = game_manager.win_check(game_id)
+    if winner:
+        flash(f'Game over! Winner: {winner}')
+    return redirect(url_for('game_page'))    
 
 @app.route('/subscribe_user', methods=['POST'])
 def subscribe_user():

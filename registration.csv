@@ -1,3 +1,5 @@
 username, usertype, status, rejection_reason, temp_password,OrdinaryUser
 elly,OrdinaryUser,Rejected,youre gaiy,
 eric,OrdinaryUser,Accepted,,e
+alice,OrdinaryUser,Accepted,,temp
+coderman,OrdinaryUser,Accepted,,temp

@@ -57,9 +57,10 @@ class WarningManager:
         with open(self.warnings_file, 'r', newline='') as file:
             reader = csv.reader(file)
             for row in reader:
-                if row[0] == username:  # accused_user is first column
+                if len(row) > 0 and row[0] == username:  # Check if row has elements and the first element matches the username
                     count += 1
         return count
+
     def remove_all_warnings(self, username):
         while self.count_warnings(username) > 0:
             self.remove_warning(username, None)                     

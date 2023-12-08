@@ -1,4 +1,6 @@
 username,password,user_type,subscribers,balence
-superuser,superuser_pass,SuperUser,0,29.599999999999994
-elly,pass,trendy,2,27.0
-eric,temp,trendy,0,10.0
+superuser,superuser_pass,SuperUser,0,29.499999999999993
+elly,pass,trendy,2,54.0
+eric,pass,trendy,0,10.0
+bob,pass,corporate,0,9.8
+alice,temp,OrdinaryUser,0,0

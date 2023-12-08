@@ -1,7 +1,8 @@
 author,time,date,keyword_list,views,complaints,comments,liker_list,dislikes,content
 elly,,11,hi,0,10,wow,"ericNone,None,superuser,None,",1,my 1st tweet
-superuser,,2023-12-06,yes,0,0,"None: i agree, wow
+superuser,,2023-12-06,yes,0,1,"None: i agree, wow
 elly: yes i agree
-","None,None,",0,poo **** ***
-superuser,,2023-12-06,"hello,goodsir",0,0,,"superuser,",0,lets go
+","None,None,bob,",2,poo **** ***
+superuser,,2023-12-06,"hello,goodsir",0,0,,"superuser,bob,",1,lets go
 superuser,11:45:08,2023-12-07,greetings,0,0,,,0,hey everyone
+elly,15:24:33,2023-12-07,hi,0,0,,"elly,",0,test tweet

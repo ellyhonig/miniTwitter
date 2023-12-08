@@ -3,4 +3,5 @@ superuser,,false
 superuser,,false
 elly,eric,true
 elly,eric,true
-
+elly,coderman,true
+superuser,elly,false
